@@ -4,10 +4,11 @@ import com.example.notesapp.data.Note
 import com.example.notesapp.data.dataBase.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
+
 interface NotesRepository{
     fun getNotes(): Flow<List<Note>>
 
-    suspend fun addNote(text:String)
+    suspend fun addNote(text:String, image: ByteArray?)
 
     fun deleteNote(note: NoteEntity)
 }

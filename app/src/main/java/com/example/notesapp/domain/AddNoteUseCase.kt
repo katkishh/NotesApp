@@ -1,12 +1,12 @@
 package com.example.notesapp.domain
 
 import com.example.notesapp.data.repository.NotesRepository
-import com.example.notesapp.data.repository.NotesRepositoryImpl
+import javax.inject.Inject
 
-class AddNoteUseCase(
-    private val notesRepository: NotesRepository = NotesRepositoryImpl()
+class AddNoteUseCase @Inject constructor(
+    private val notesRepository: NotesRepository
 ) {
-    suspend fun execute(text:String){
-        notesRepository.addNote(text)
+    suspend fun execute(text:String, image: ByteArray?){
+        notesRepository.addNote(text, image)
     }
 }

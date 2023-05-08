@@ -2,4 +2,5 @@
     <string name="app_name">NotesApp</string>
     <string name="quick_note">QuickNote</string>
     <string name="note_text">Note text that resizes the card vertically to fit itself. It can be very long, but let’s settle on 180 characters as the limit</string>
+    <string name="add_img">Add image...</string>
 </resources>

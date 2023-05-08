@@ -14,12 +14,15 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.notesapp.R
 import com.example.notesapp.data.mappers.NotesMapper
 import com.example.notesapp.databinding.FragmentNotesListBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NoteListFragment: Fragment(R.layout.fragment_notes_list) {
     private val binding by viewBinding(FragmentNotesListBinding::bind)
     private val viewModel by viewModels<NoteListViewModel>()
 
-    private val listAdapter = ListFragmentAdapter()
+    @Inject lateinit var listAdapter: ListFragmentAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

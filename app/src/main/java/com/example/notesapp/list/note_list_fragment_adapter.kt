@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.data.Note
 import com.example.notesapp.databinding.ItemNoteBinding
+import javax.inject.Inject
 
-class ListFragmentAdapter: ListAdapter<Note, ListFragmentAdapter.NoteViewHolder>(diffUtil){
+class ListFragmentAdapter @Inject constructor() : ListAdapter<Note, ListFragmentAdapter.NoteViewHolder>(diffUtil){
 
     var onNoteClick : (Note) -> Unit = {}
     var onNoteLongClick: (Note) -> Unit = {}

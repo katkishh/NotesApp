@@ -7,4 +7,5 @@ import androidx.room.PrimaryKey
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val text: String,
+    val image: ByteArray?,
 )

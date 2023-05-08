@@ -9,21 +9,24 @@ import com.example.notesapp.data.Note
 import com.example.notesapp.data.dataBase.model.NoteEntity
 import com.example.notesapp.domain.AddNoteUseCase
 import com.example.notesapp.domain.DeleteUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class NoteListViewModel(
-    private val getNotesUseCase: GetNotesUseCase = GetNotesUseCase(),
-    private val addNoteUseCase: AddNoteUseCase = AddNoteUseCase(),
-    private val deleteUseCase: DeleteUseCase = DeleteUseCase()
+@HiltViewModel
+class NoteListViewModel @Inject constructor(
+    private val getNotesUseCase: GetNotesUseCase,
+    private val addNoteUseCase: AddNoteUseCase,
+    private val deleteUseCase: DeleteUseCase
 ) : ViewModel() {
     private val _notesListLiveData = MutableLiveData<List<Note>>()
     val notesListLiveData: LiveData<List<Note>> = _notesListLiveData
 
-    fun onAddClicked(text: String){
+    fun onAddClicked(text: String, image: ByteArray?){
         viewModelScope.launch {
-            addNoteUseCase.execute(text)
+            addNoteUseCase.execute(text, image)
         }
     }
 
