@@ -1,9 +1,6 @@
 package com.example.notesapp.data.dataBase
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.notesapp.data.dataBase.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +8,9 @@ import kotlinx.coroutines.flow.Flow
 interface NotesDAO {
     @Insert
     suspend fun addNote(note: NoteEntity): Long
+
+    @Update
+    suspend fun editNote(note: NoteEntity)
 
     @Query("SELECT * FROM notes")
     fun getNotes(): Flow<List<NoteEntity>>

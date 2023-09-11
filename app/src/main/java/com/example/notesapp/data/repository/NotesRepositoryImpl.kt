@@ -22,6 +22,10 @@ class NotesRepositoryImpl @Inject constructor(
         notesDAO.addNote(NoteEntity(text = text, image = image))
     }
 
+    override suspend fun editNote(note: NoteEntity) {
+        notesDAO.editNote(note)
+    }
+
     override fun deleteNote(note: NoteEntity){
         notesDAO.deleteNote(note)
     }

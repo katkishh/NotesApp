@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_noteListFragment_to_noteAddFragment"
             app:destination="@id/noteAddFragment" />
+
     </fragment>
 
     <fragment
@@ -23,6 +24,11 @@
         <action
             android:id="@+id/action_noteAddFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
+        <argument
+            android:name="note"
+            app:argType="com.example.notesapp.data.Note"
+            app:nullable="true"/>
+
 
     </fragment>
 </navigation>

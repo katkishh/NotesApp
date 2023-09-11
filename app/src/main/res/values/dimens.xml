@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_size">184dp</dimen>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="cancel_margin">-4dp</dimen>
+</resources>

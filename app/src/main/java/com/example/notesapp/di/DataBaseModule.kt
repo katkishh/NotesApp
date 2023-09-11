@@ -2,6 +2,8 @@ package com.example.notesapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.notesapp.data.dataBase.NotesDAO
 import com.example.notesapp.data.dataBase.NotesDB
 import dagger.Module
@@ -16,6 +18,13 @@ import javax.inject.Singleton
 object DataBaseModule {
     private const val DB_NAME = "notes_db"
 
+    private val Migration_1_2 = object: Migration(1, 2){
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE notes ADD COLUMN image BLOB")
+        }
+
+    }
+
     @Provides
     @Singleton
     fun provideNotesDataBase(@ApplicationContext context: Context): NotesDB{
@@ -23,7 +32,9 @@ object DataBaseModule {
             context,
             NotesDB::class.java,
             DB_NAME,
-        ).build()
+        )
+            .addMigrations(Migration_1_2)
+            .build()
     }
 
     @Provides

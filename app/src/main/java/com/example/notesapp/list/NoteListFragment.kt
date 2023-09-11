@@ -2,7 +2,6 @@ package com.example.notesapp.list
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -34,8 +33,10 @@ class NoteListFragment: Fragment(R.layout.fragment_notes_list) {
                 layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
 
                 adapter = listAdapter.apply {
-                    onNoteClick = { note ->
-                        Toast.makeText(requireContext(), note.text, Toast.LENGTH_SHORT).show()
+                    onNoteClick = {note ->
+                        findNavController().navigate(
+                            NoteListFragmentDirections.actionNoteListFragmentToNoteAddFragment(note)
+                        )
                     }
                     onNoteLongClick = {note ->
                         viewModel.onDeleteClicked(NotesMapper().fromUiModelToEntity(note))
@@ -45,9 +46,11 @@ class NoteListFragment: Fragment(R.layout.fragment_notes_list) {
 
             floatingActionButton.setOnClickListener {
                     findNavController().safeNavigate(
-                    NoteListFragmentDirections.actionNoteListFragmentToNoteAddFragment()
+                    NoteListFragmentDirections.actionNoteListFragmentToNoteAddFragment(null)
                 )
             }
+
+
 
         }
 

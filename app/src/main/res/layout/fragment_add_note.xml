@@ -21,42 +21,63 @@
         android:id="@+id/editTextNoteText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin"
         android:background="@android:color/transparent"
         android:minHeight="56dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAddImage"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin"
         android:paddingStart="8dp"
         android:paddingEnd="16dp"
         android:text="@string/add_img"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:textColor="?attr/colorOnBackground"
         android:textSize="14sp"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_add_images"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNoteText"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextNoteText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSubmitNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
         android:src="@drawable/ic_submit_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewImage"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNoteText"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/imageViewCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewImage"
+        app:layout_constraintTop_toTopOf="@+id/imageViewImage"
+        android:src="@drawable/ic_cancel_24"
+        android:layout_marginTop="@dimen/cancel_margin"
+        android:visibility="gone"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

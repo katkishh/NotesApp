@@ -10,5 +10,7 @@ interface NotesRepository{
 
     suspend fun addNote(text:String, image: ByteArray?)
 
+    suspend fun editNote(note: NoteEntity)
+
     fun deleteNote(note: NoteEntity)
 }
