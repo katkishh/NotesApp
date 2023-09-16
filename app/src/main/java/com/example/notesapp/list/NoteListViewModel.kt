@@ -1,5 +1,6 @@
 package com.example.notesapp.list
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +27,10 @@ class NoteListViewModel @Inject constructor(
     private val _notesListLiveData = MutableLiveData<List<Note>>()
     val notesListLiveData: LiveData<List<Note>> = _notesListLiveData
 
-    fun onAddClicked(text: String, image: Uri?){
+    fun onAddClicked(text: String?, image: Bitmap?){
         if (image != null) {
-            getContentUriUseCase(image)?.let {
-                viewModelScope.launch {
-                    addNoteUseCase.execute(text, it)
-                }
+            viewModelScope.launch {
+                addNoteUseCase.execute(text, getCompressedByteArray(image))
             }
         }
         else{
@@ -47,17 +47,17 @@ class NoteListViewModel @Inject constructor(
         }
     }
 
-    fun onEditClicked(id: Long, text: String, image: Uri?){
+    fun onEditClicked(id: Long, text: String?, image: Bitmap?){
         if (image != null) {
-            getContentUriUseCase(image)?.let {
-                viewModelScope.launch {
-                    editNoteUseCase.execute(NoteEntity(
-                        id,
-                        text,
-                        it
-                    ))
-                }
+            viewModelScope.launch {
+                editNoteUseCase.execute(NoteEntity(
+                    id,
+                    text,
+                    getCompressedByteArray(image)
+                ))
             }
+
+
         }
         else{
             viewModelScope.launch {
@@ -79,6 +79,20 @@ class NoteListViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun getBitmapFromUri(uri: Uri?):Bitmap?{
+        return uri?.let {
+            getContentUriUseCase(it)
+        }
+    }
+
+    private fun getCompressedByteArray(bitmap: Bitmap?):ByteArray?{
+        return bitmap?.let {
+            val stream = ByteArrayOutputStream()
+            it.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.toByteArray()
         }
     }
 }

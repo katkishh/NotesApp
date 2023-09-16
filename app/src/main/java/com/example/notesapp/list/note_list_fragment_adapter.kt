@@ -1,6 +1,8 @@
 package com.example.notesapp.list
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -20,10 +22,22 @@ class ListFragmentAdapter @Inject constructor() : ListAdapter<Note, ListFragment
         fun bind(item: Note){
             with(binding){
                 root.setOnClickListener { onNoteClick.invoke(item) }
-                textViewNote.text = item.text
+                item.text?.let {
+                    if(it.length > 40){
+                        val text = it.slice(0..39) + "..."
+                        textViewNote.text = text
+                    }
+                    else{ textViewNote.text = it }
+                }
                 root.setOnLongClickListener {
                     onNoteLongClick.invoke(item)
                     true
+                }
+                item.image?.let {
+                    imageViewNoteImage.visibility = View.VISIBLE
+                    imageViewNoteImage.setImageBitmap(
+                        BitmapFactory.decodeByteArray(it, 0, it.size)
+                    )
                 }
             }
         }

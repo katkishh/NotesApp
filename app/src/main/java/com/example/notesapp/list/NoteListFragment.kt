@@ -49,9 +49,6 @@ class NoteListFragment: Fragment(R.layout.fragment_notes_list) {
                     NoteListFragmentDirections.actionNoteListFragmentToNoteAddFragment(null)
                 )
             }
-
-
-
         }
 
         viewModel.notesListLiveData.observe(viewLifecycleOwner){

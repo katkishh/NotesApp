@@ -3,4 +3,5 @@
     <dimen name="image_size">184dp</dimen>
     <dimen name="margin">16dp</dimen>
     <dimen name="cancel_margin">-4dp</dimen>
+    <dimen name="small_image_size">100dp</dimen>
 </resources>

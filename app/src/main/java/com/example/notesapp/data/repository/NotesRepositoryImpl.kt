@@ -18,7 +18,7 @@ class NotesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addNote(text: String, image: ByteArray?) {
+    override suspend fun addNote(text: String?, image: ByteArray?) {
         notesDAO.addNote(NoteEntity(text = text, image = image))
     }
 

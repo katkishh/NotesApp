@@ -1,10 +1,11 @@
 package com.example.notesapp.add
 
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -27,13 +28,16 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
         if (uri != null) {
-            image = uri
+            image = viewModelList.getBitmapFromUri(uri)
+            binding.imageViewImage.setImageURI(uri)
+            visibilitiesWithImage()
+            Log.d("PhotoPicker", image.toString())
         } else {
             Log.d("PhotoPicker", "No media selected")
         }
     }
 
-    private var image: Uri? = null
+    private var image: Bitmap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,11 +47,11 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
                 args.note?.let { note ->
                     editTextNoteText.setText(note.text)
                     note.image?.let {img ->
-                        imageViewImage.setImageURI(
-                            getUriFromByteArray(img)
+                        image = BitmapFactory.decodeByteArray(img, 0, img.size)
+                        imageViewImage.setImageBitmap(
+                            image
                         )
                         visibilitiesWithImage()
-                        image = getUriFromByteArray(img)
                     }
 
                     toolbar.setNavigationOnClickListener {
@@ -60,6 +64,8 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
                 }
             }
             else{
+                visibilitiesWithoutImage()
+
                 toolbar.setNavigationOnClickListener {
                     submitNote(image)
                 }
@@ -71,9 +77,6 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
 
             buttonAddImage.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                image?.let {
-                    visibilitiesWithImage()
-                }
             }
 
             imageViewCancel.setOnClickListener {
@@ -81,30 +84,38 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
                 visibilitiesWithoutImage()
             }
         }
-
-
     }
 
     private fun NavController.safeNavigate(direction: NavDirections) {
         currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
     }
 
-    private fun submitNote(image: Uri?){
+    private fun submitNote(image: Bitmap?){
         val text = binding.editTextNoteText.text.toString()
-        viewModelList.onAddClicked(text, image)
+        if(text != "" || image!=null){
+            viewModelList.onAddClicked(text, image)
 
-        findNavController().safeNavigate(
-            NoteAddFragmentDirections.actionNoteAddFragmentToNoteListFragment()
-        )
+            findNavController().safeNavigate(
+                NoteAddFragmentDirections.actionNoteAddFragmentToNoteListFragment()
+            )
+        }else{
+            Toast.makeText(context, R.string.empty_note_warning, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    private fun editNote(id: Long, image: Uri?){
+    private fun editNote(id: Long, image: Bitmap?){
         val text = binding.editTextNoteText.text.toString()
-        viewModelList.onEditClicked(id, text, image)
+        if (text != "" || image!=null){
+            viewModelList.onEditClicked(id, text, image)
 
-        findNavController().safeNavigate(
-            NoteAddFragmentDirections.actionNoteAddFragmentToNoteListFragment()
-        )
+            findNavController().safeNavigate(
+                NoteAddFragmentDirections.actionNoteAddFragmentToNoteListFragment()
+            )
+        } else{
+            Toast.makeText(context, R.string.empty_note_warning, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun visibilitiesWithImage(){
@@ -122,10 +133,5 @@ class NoteAddFragment: Fragment(R.layout.fragment_add_note) {
             buttonAddImage.visibility = View.VISIBLE
         }
     }
-
-    private fun getUriFromByteArray(byteArray: ByteArray): Uri {
-        return Uri.parse("data:image/jpeg;base64," + Base64.encodeToString(byteArray, Base64.NO_WRAP))
-    }
-
 
 }

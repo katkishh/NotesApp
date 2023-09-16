@@ -25,6 +25,15 @@ object DataBaseModule {
 
     }
 
+    private val Migration_2_3 = object :Migration(2, 3){
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS notes_2(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text TEXT , image BLOB)")
+            database.execSQL("INSERT INTO notes_2 SELECT*FROM notes")
+            database.execSQL("DROP TABLE notes")
+            database.execSQL("ALTER TABLE notes_2 RENAME TO notes")
+        }
+    }
+
     @Provides
     @Singleton
     fun provideNotesDataBase(@ApplicationContext context: Context): NotesDB{
@@ -34,6 +43,7 @@ object DataBaseModule {
             DB_NAME,
         )
             .addMigrations(Migration_1_2)
+            .addMigrations(Migration_2_3)
             .build()
     }
 

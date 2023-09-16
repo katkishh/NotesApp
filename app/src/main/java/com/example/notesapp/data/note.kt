@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Note(
     val id:Long,
-    val text:String,
+    val text:String?,
     val image: ByteArray?,
 ): Parcelable
